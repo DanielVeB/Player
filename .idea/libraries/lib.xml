@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../javafx/javafx-sdk-17.0.6/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../javafx/javafx-sdk-17.0.6/lib/javafx-swt.jar!/" />
+      <root url="file://$PROJECT_DIR$/../javafx/javafx-sdk-17.0.6" />
+      <root url="file://$PROJECT_DIR$/../javafx/javafx-sdk-17.0.6/lib" />
+      <root url="file://$USER_HOME$/.jdks/graalvm-ce-17" />
+      <root url="file://$PROJECT_DIR$/../javafx/javafx-sdk-17.0.6/lib" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../javafx/javafx-sdk-17.0.6/lib" recursive="false" />
+  </library>
+</component>

@@ -1,4 +1,4 @@
-package Model;
+package com.kurosz.Model;
 
 public abstract class LyricsConnector {
 

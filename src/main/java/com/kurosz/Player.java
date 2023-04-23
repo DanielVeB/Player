@@ -1,6 +1,6 @@
-package View;
+package com.kurosz;
 
-import Model.JDBCConnector;
+import com.kurosz.Model.JDBCConnector;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

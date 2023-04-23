@@ -1,12 +1,11 @@
-package Controller;
+package com.kurosz.Controller;
 
 
-import Model.*;
+import com.kurosz.Model.*;
 import com.jfoenix.controls.JFXListView;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,11 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -27,20 +24,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
-import javax.annotation.processing.Generated;
-import javax.script.Bindings;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -344,14 +337,15 @@ public class PlayerController implements Initializable,Observer {
     }
 
     @FXML
-    private void addSongs(){
+    private void addSongs() throws InvalidDataException, UnsupportedTagException, IOException {
         List<File> files=null;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add new songs");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio files","*.mp3","*.3gp","*.flac"));
         files=fileChooser.showOpenMultipleDialog(new Stage());
-        if(files!=null)
-        JDBCConnector.addSongs(files);
+        if(files!=null){
+                    JDBCConnector.addSongs(files);
+        }
 
     }
 
@@ -499,7 +493,7 @@ public class PlayerController implements Initializable,Observer {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        musicBar.setVisible(false);
+        musicBar.setVisible(true);
         mp3player=new Mp3player();
         mp3player.loadBar(musicBar);
 

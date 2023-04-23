@@ -1,9 +1,9 @@
-package Controller;
+package com.kurosz.Controller;
 
-import Model.Genres;
-import Model.JDBCConnector;
-import Model.Moods;
-import Model.Song;
+import com.kurosz.Model.Genres;
+import com.kurosz.Model.JDBCConnector;
+import com.kurosz.Model.Moods;
+import com.kurosz.Model.Song;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
@@ -27,21 +27,22 @@ import java.util.ResourceBundle;
 
 public class editSongController implements Initializable {
     @FXML
-    private JFXTextField titleSong,artistSong,albumSong;
+    private JFXTextField titleSong, artistSong, albumSong;
 
     @FXML
-    private ListView<String>genresList,moodsList;
+    private ListView<String> genresList, moodsList;
     @FXML
     private ImageView imageSong;
     @FXML
     private JFXTextArea lirycsSong;
     @FXML
     private Button saveButton;
-    private String path="";
+    private String path = "";
     private Song s;
+
     void initData(Song s) {
-        this.s=s;
-        path=s.getPath();
+        this.s = s;
+        path = s.getPath();
         List<String> genreList = new LinkedList<String>(Genres.genres.keySet());
         List<String> moodList = new LinkedList<String>(Moods.moods.keySet());
         titleSong.setText(s.getTitle());
@@ -49,30 +50,30 @@ public class editSongController implements Initializable {
         albumSong.setText(s.getAlbum());
         lirycsSong.setText(s.getText());
 
-        String[]genres=JDBCConnector.returnGenreMood(s.getPath(),"genre");
-        if(genres!=null) {
+        String[] genres = JDBCConnector.returnGenreMood(s.getPath(), "genre");
+        if (genres != null) {
             for (String genre : genres) {
                 int index = genreList.indexOf(genre);
                 genresList.getSelectionModel().select(index);
             }
         }
-        String[]moods=JDBCConnector.returnGenreMood(s.getPath(),"moods");
-        if(moods!=null) {
+        String[] moods = JDBCConnector.returnGenreMood(s.getPath(), "moods");
+        if (moods != null) {
             for (String mood : moods) {
                 int index = moodList.indexOf(mood);
                 moodsList.getSelectionModel().select(index);
             }
         }
-        Image image=new Image("file:"+s.getImage());
+        Image image = new Image("file:" + s.getImage());
         imageSong.setImage(image);
         imageSong.setStyle("-fx-cursor: hand");
-        imageSong.setOnMouseClicked((MouseEvent event)->{
+        imageSong.setOnMouseClicked((MouseEvent event) -> {
             try {
                 FileChooser fileChooser = new FileChooser();
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image","*.png","*.jpeg","*.jpg"));
-                File file=fileChooser.showOpenDialog(new Stage());
-                String path=file.getAbsolutePath();
-                FileInputStream inputstream =new FileInputStream(path);
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image", "*.png", "*.jpeg", "*.jpg"));
+                File file = fileChooser.showOpenDialog(new Stage());
+                String path = file.getAbsolutePath();
+                FileInputStream inputstream = new FileInputStream(path);
                 Image iv = new Image(inputstream);
                 s.setImage(path);
                 imageSong.setImage(iv);
@@ -83,13 +84,14 @@ public class editSongController implements Initializable {
         });
 
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        for(String name:Moods.moods.keySet()){
+        for (String name : Moods.moods.keySet()) {
             moodsList.getItems().add(name);
         }
-        for (String name: Genres.genres.keySet()){
+        for (String name : Genres.genres.keySet()) {
             genresList.getItems().add(name);
         }
         moodsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -97,17 +99,19 @@ public class editSongController implements Initializable {
 
 
     }
+
     @FXML
-    private void save(){
-        String[]genres= genresList.getSelectionModel().getSelectedItems().toArray(new String[0]);
-        String[]moods=moodsList.getSelectionModel().getSelectedItems().toArray(new String[0]);
-        JDBCConnector.updateSong(titleSong.getText(),artistSong.getText(),albumSong.getText(),genres,moods,
-               lirycsSong.getText(),s.getImage(),path );
+    private void save() {
+        String[] genres = genresList.getSelectionModel().getSelectedItems().toArray(new String[0]);
+        String[] moods = moodsList.getSelectionModel().getSelectedItems().toArray(new String[0]);
+        JDBCConnector.updateSong(titleSong.getText(), artistSong.getText(), albumSong.getText(), genres, moods,
+                lirycsSong.getText(), s.getImage(), path);
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
+
     @FXML
-    private void find_lyrics(){
-       s.findLyrics(lirycsSong);
+    private void find_lyrics() {
+        s.findLyrics(lirycsSong);
     }
 }

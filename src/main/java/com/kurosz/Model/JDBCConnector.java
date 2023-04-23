@@ -1,4 +1,4 @@
-package Model;
+package com.kurosz.Model;
 
 import com.mpatric.mp3agic.*;
 import javafx.collections.FXCollections;
@@ -21,7 +21,7 @@ public class JDBCConnector {
     public static void connect() throws IllegalAccessException, InstantiationException, SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
         conn = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/player", "postgres", "password");
+                "jdbc:postgresql://localhost:5432/player", "postgres", "postgres");
     }
 
     public static void disconnect() throws SQLException {
@@ -34,7 +34,8 @@ public class JDBCConnector {
      * @param files list of songs
      */
 
-    public static void addSongs(List<File> files) {
+    public static void addSongs(List<File> files) throws InvalidDataException, UnsupportedTagException, IOException {
+        System.out.println("ADD SONG");
         /*
         INSERT INTO songs
         1-title *required(id3v1/2 - title , else name of file)
@@ -119,14 +120,17 @@ public class JDBCConnector {
                             null, null, null, null);
                 }
                 //Create row in Artist table
-                if (artist != null) {
-                    addArtist(artist);
-                }
+//                if (artist != null) {
+//                    addArtist(artist);
+//                }
                 //Create row in album table
-                if (album != null) {
-                    addAlbum(album);
-                }
-            } catch (SQLException | IOException | UnsupportedTagException | InvalidDataException e) {
+//                if (album != null) {
+//                    addAlbum(album);
+//                }
+            } catch (IOException | InvalidDataException | UnsupportedTagException e) {
+                System.out.println("SOMETHING BAD HAPPENED");
+                System.out.println(e.getMessage());
+                throw e;
                 //do nothing
             }
         }

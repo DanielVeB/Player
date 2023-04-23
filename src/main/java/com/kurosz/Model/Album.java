@@ -1,8 +1,6 @@
-package Model;
+package com.kurosz.Model;
 
-import Controller.PlayerController;
 import com.jfoenix.controls.JFXTextField;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -28,7 +26,6 @@ public class Album extends ArtistAlbum{
         this.label = label;
         this.artist = artist;
         this.description=description;
-
     }
 
     public String getDescription() {

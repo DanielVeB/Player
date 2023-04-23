@@ -1,6 +1,5 @@
-package Model;
+package com.kurosz.Model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

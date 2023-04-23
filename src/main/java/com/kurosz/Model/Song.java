@@ -1,4 +1,4 @@
-package Model;
+package com.kurosz.Model;
 
 import com.jfoenix.controls.JFXTextArea;
 import javafx.beans.property.SimpleIntegerProperty;

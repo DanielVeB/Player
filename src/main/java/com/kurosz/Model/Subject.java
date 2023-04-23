@@ -1,4 +1,4 @@
-package Model;
+package com.kurosz.Model;
 
 public interface Subject {
      void register(Observer o);

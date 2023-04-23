@@ -1,7 +1,6 @@
-package Model;
+package com.kurosz.Model;
 
 import com.jfoenix.controls.JFXTextField;
-import javafx.beans.Observable;
 import javafx.geometry.Pos;
 import javafx.scene.layout.AnchorPane;
 

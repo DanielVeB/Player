@@ -1,4 +1,4 @@
-package com.kurosz.Controller;
+package com.kurosz.controller;
 
 import javafx.fxml.Initializable;
 import org.slf4j.Logger;

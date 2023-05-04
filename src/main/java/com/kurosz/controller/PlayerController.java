@@ -1,8 +1,8 @@
-package com.kurosz.Controller;
+package com.kurosz.controller;
 
 
 import com.jfoenix.controls.JFXListView;
-import com.kurosz.Model.*;
+import com.kurosz.model.*;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.animation.FadeTransition;

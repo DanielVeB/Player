@@ -1,6 +1,6 @@
-package com.kurosz.Model;
+package com.kurosz.model;
 
-import com.kurosz.Controller.EditArtistOrAlbum;
+import com.kurosz.controller.EditArtistOrAlbum;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

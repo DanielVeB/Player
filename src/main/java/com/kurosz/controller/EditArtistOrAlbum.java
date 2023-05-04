@@ -1,6 +1,6 @@
-package com.kurosz.Controller;
+package com.kurosz.controller;
 
-import com.kurosz.Model.ArtistAlbum;
+import com.kurosz.model.ArtistAlbum;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;

@@ -1,4 +1,4 @@
-package com.kurosz.Model;
+package com.kurosz.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

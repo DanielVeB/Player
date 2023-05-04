@@ -1,4 +1,4 @@
-package com.kurosz.Model;
+package com.kurosz.model;
 
 import com.jfoenix.controls.JFXTextField;
 import javafx.collections.FXCollections;

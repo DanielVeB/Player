@@ -16,7 +16,7 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="800.0" prefWidth="1280.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:controller="com.kurosz.Controller.PlayerController">
+            xmlns:fx="http://javafx.com/fxml" fx:controller="com.kurosz.controller.PlayerController">
    <children>
       <AnchorPane fx:id="top" prefHeight="75.0" prefWidth="1280.0">
          <children>

@@ -1,4 +1,4 @@
-package com.kurosz.Model;
+package com.kurosz.model;
 
 import com.mpatric.mp3agic.*;
 import javafx.collections.FXCollections;

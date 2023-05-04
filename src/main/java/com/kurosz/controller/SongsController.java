@@ -1,6 +1,6 @@
-package com.kurosz.Controller;
+package com.kurosz.controller;
 
-import com.kurosz.Model.Song;
+import com.kurosz.model.Song;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

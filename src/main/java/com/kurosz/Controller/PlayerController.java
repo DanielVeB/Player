@@ -1,8 +1,8 @@
 package com.kurosz.Controller;
 
 
-import com.kurosz.Model.*;
 import com.jfoenix.controls.JFXListView;
+import com.kurosz.Model.*;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.animation.FadeTransition;
@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -22,13 +21,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,42 +38,49 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.IntStream;
 
-public class PlayerController implements Initializable,Observer {
-    private LinkedList<Song>songs=new LinkedList<>();
-
-    @FXML
-    private Button musicbutton,moviebutton,exit,displayAlbums,displayArtists,displaySongsButton,
-            searchButton,addSongsButton,playlistCreateButton;
+public class PlayerController implements Initializable, Observer {
+    private LinkedList<Song> songs = new LinkedList<>();
 
     @FXML
-    private AnchorPane moviePane,musicPane,musicMenu,movieMenu,
-            displayWithInfo,displayAlbumsArtists,displaySongs,mainMusicPane,
-            createPlaylistPane,musicBar;
+    private Button musicbutton, moviebutton, exit, displayAlbums, displayArtists, displaySongsButton,
+            searchButton, addSongsButton, playlistCreateButton;
 
     @FXML
-    private ListView<Button>playlisty;
-    @FXML
-    private ListView<DisplayArtistAlbum>AAView;
-    @FXML
-    private Label info,printSongInfo,numberOfSongs,additionalInfo;
+    private StackPane musicStackPane;
 
     @FXML
-    private JFXListView<Button>genresListView,moodsListView;
+    private NewPlaylistController newPlaylistController;
 
     @FXML
-    private TableView<Song> tableOfSongs,songsOfPlaylist;
+    private AnchorPane moviePane, musicPane, musicMenu, movieMenu,
+            displayWithInfo, displayAlbumsArtists, displaySongs, mainMusicPane,
+            createPlaylistPane, musicBar, newPlaylistPane, songsPane;
+
     @FXML
-    private TableColumn<Song,String>title,artist,album,year,track,
-                                    titleP,artistP,albumP,yearP,trackP;
+    private ListView<Button> playlisty;
     @FXML
-    private TableColumn<Song,Integer>rate,rateP;
+    private ListView<DisplayArtistAlbum> AAView;
     @FXML
-    private TextField searchField,playlistName;
+    private Label info, printSongInfo, numberOfSongs, additionalInfo;
+
+    @FXML
+    private JFXListView<Button> genresListView, moodsListView;
+
+    @FXML
+    private TableView<Song> tableOfSongs, songsOfPlaylist;
+    @FXML
+    private TableColumn<Song, String> title, artist, album, year, track,
+            titleP, artistP, albumP, yearP, trackP;
+    @FXML
+    private TableColumn<Song, Integer> rate, rateP;
+    @FXML
+    private TextField searchField, playlistName;
     @FXML
     private TextArea playlistDescription;
     @FXML
-    private ImageView playlistImage,imageView;
+    private ImageView playlistImage, imageView;
     @FXML
     private Pane songPane;
     @FXML
@@ -83,79 +88,85 @@ public class PlayerController implements Initializable,Observer {
 
 
     @FXML
-    private void search(){
-        String regex=searchField.getText();
+    private void search() {
+        String regex = searchField.getText();
         try {
-            updateTable(2,regex);
+            updateTable(2, regex);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    Mp3player mp3player=null;
+
+    Mp3player mp3player = null;
 
 
+    public void handleButton(ActionEvent event) {
 
-    public void handleButton(ActionEvent event){
-
-        if(event.getTarget()==musicbutton){
-            fadeOut(musicPane,moviePane);
+        if (event.getTarget() == musicbutton) {
+            fadeOut(musicPane, moviePane);
             movieMenu.setVisible(false);
             musicMenu.setVisible(true);
             mainMusicPane.toFront();
-        }
-        else if(event.getTarget()==moviebutton){
-            fadeOut(moviePane,musicPane);
+        } else if (event.getTarget() == moviebutton) {
+            fadeOut(moviePane, musicPane);
             movieMenu.setVisible(true);
             musicMenu.setVisible(false);
-        }
-        else if(event.getTarget()==exit){
+        } else if (event.getTarget() == exit) {
             Platform.exit();
             System.exit(0);
-        }
-        else if(event.getTarget()==displayAlbums){
+        } else if (event.getTarget() == displayAlbums) {
             loadAlbums();
             displayAlbumsArtists.toFront();
-        }
-        else if(event.getTarget()==displayArtists){
+        } else if (event.getTarget() == displayArtists) {
             loadArtists();
             displayAlbumsArtists.toFront();
 
+        } else if (event.getTarget() == displaySongsButton) {
+//            displaySongs.toFront();
+//            try {
+//                updateTable(1,null);
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+            switchPane(songsPane);
         }
-        else if(event.getTarget()==displaySongsButton){
-            displaySongs.toFront();
-            try {
-                updateTable(1,null);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    }
+
+    private void switchPane(AnchorPane pane) {
+        int index = musicStackPane.getChildren().indexOf(pane);
+        if (index >= 0) {
+            IntStream.range(0, musicStackPane.getChildren().size())
+                    .filter(i -> i != index)
+                    .forEach(i -> musicStackPane.getChildren().get(i).setVisible(false));
+            musicStackPane.getChildren().get(index).setVisible(true);
+            musicStackPane.getChildren().get(index).toFront();
         }
     }
 
-    //create Playlist
     @FXML
-    private void createPlaylist(){
-        createPlaylistPane.toFront();
+    private void createPlaylist() {
+        switchPane(newPlaylistPane);
     }
 
     @FXML
-    private void playlistCreator(){
-        String name=playlistName.getText();
-        String description=playlistDescription.getText();
-        String imagepath=playlistImage.getImage().getUrl();
+    private void playlistCreator() {
+        String name = playlistName.getText();
+        String description = playlistDescription.getText();
+        String imagepath = playlistImage.getImage().getUrl();
 
     }
 
 
     @FXML
-    private void loadArtists(){
+    private void loadArtists() {
 
-        ObservableList<Artist>artists=null;
+        ObservableList<Artist> artists = null;
         try {
-            artists=JDBCConnector.returnArtists();
-            if(artists!=null){
+            artists = JDBCConnector.returnArtists();
+            if (artists != null) {
                 AAView.getItems().clear();
-                for(Artist artist:artists){
-                    AAView.getItems().add(new DisplayArtistAlbum(artist,1));
+                for (Artist artist : artists) {
+                    AAView.getItems().add(new DisplayArtistAlbum(artist, 1));
                 }
             }
         } catch (SQLException e) {
@@ -164,20 +175,21 @@ public class PlayerController implements Initializable,Observer {
         AAView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent click) {
-                    String[] parts = AAView.getSelectionModel().getSelectedItem().getAccessibleText().split("\\|");
-                    System.out.println(parts[1]);
-                    displayPlaylistPane(2,parts[0],parts[1]);
+                String[] parts = AAView.getSelectionModel().getSelectedItem().getAccessibleText().split("\\|");
+                System.out.println(parts[1]);
+                displayPlaylistPane(2, parts[0], parts[1]);
             }
         });
     }
-    private void loadAlbums(){
-        ObservableList<Album>albums=null;
+
+    private void loadAlbums() {
+        ObservableList<Album> albums = null;
         try {
-            albums=JDBCConnector.returnAlbums();
-            if(albums!=null){
+            albums = JDBCConnector.returnAlbums();
+            if (albums != null) {
                 AAView.getItems().clear();
-                for(Album album:albums){
-                    AAView.getItems().add(new DisplayArtistAlbum(album,2));
+                for (Album album : albums) {
+                    AAView.getItems().add(new DisplayArtistAlbum(album, 2));
                 }
             }
         } catch (SQLException e) {
@@ -186,8 +198,8 @@ public class PlayerController implements Initializable,Observer {
         AAView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent click) {
-                    String[] parts = AAView.getSelectionModel().getSelectedItem().getAccessibleText().split("\\|");
-                    displayPlaylistPane(3,parts[0],parts[1]);
+                String[] parts = AAView.getSelectionModel().getSelectedItem().getAccessibleText().split("\\|");
+                displayPlaylistPane(3, parts[0], parts[1]);
             }
         });
 
@@ -195,14 +207,14 @@ public class PlayerController implements Initializable,Observer {
 
 
     @FXML
-    private  void loadPlaylistImage(){
+    private void loadPlaylistImage() {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add image");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image","*.png","*.jpeg","*.jpg"));
-        File file=fileChooser.showOpenDialog(new Stage());
-        String path=null;
-        path=file.getAbsolutePath();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image", "*.png", "*.jpeg", "*.jpg"));
+        File file = fileChooser.showOpenDialog(new Stage());
+        String path = null;
+        path = file.getAbsolutePath();
         FileInputStream inputstream = null;
         try {
             System.out.println(path);
@@ -216,27 +228,24 @@ public class PlayerController implements Initializable,Observer {
     }
 
 
-
-
-
-    private void updateListView(ListView<Button>listView,Map<String,String>map){
-        for (Map.Entry<String, String> entry : map.entrySet())
-        {
-            ImageView imageView=null;
-            try{
+    private void updateListView(ListView<Button> listView, Map<String, String> map) {
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            ImageView imageView = null;
+            try {
                 imageView = new ImageView(
                         new Image(entry.getValue())
                 );
-            }catch (Exception ex){
-                imageView=new ImageView();
-            }finally {
-                Button b=new Button(entry.getKey(),imageView);
+            } catch (Exception ex) {
+                imageView = new ImageView();
+            } finally {
+                Button b = new Button(entry.getKey(), imageView);
                 b.setId("gmbutton");
                 b.setContentDisplay(ContentDisplay.TOP);
                 b.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent event) {
+                    @Override
+                    public void handle(ActionEvent event) {
                         try {
-                            updateTable(3,b.getText());
+                            updateTable(3, b.getText());
                         } catch (SQLException e) {
                             e.printStackTrace();
                         }
@@ -248,7 +257,7 @@ public class PlayerController implements Initializable,Observer {
     }
 
 
-    public Stage showEditSongWindow(Song s,String fxml) {
+    public Stage showEditSongWindow(Song s, String fxml) {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
                         fxml
@@ -257,53 +266,44 @@ public class PlayerController implements Initializable,Observer {
 
         Stage stage = new Stage(StageStyle.DECORATED);
         try {
-            stage.setScene(
-                    new Scene(
-                            (Pane) loader.load()
-                    )
-            );
+            stage.setScene(new Scene(loader.load()));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        editSongController controller =
-                loader.<editSongController>getController();
+        EditSongController controller = loader.getController();
         controller.initData(s);
-
         stage.show();
 
         return stage;
     }
 
 
-
-
-    private void editSong(Song song){
-        showEditSongWindow(song,"/editSong.fxml");
+    private void editSong(Song song) {
+        showEditSongWindow(song, "/editSong.fxml");
     }
 
 
     /**
-     *
-     * @param i 1-all songs 2,regex 3-moods or genres
+     * @param i     1-all songs 2,regex 3-moods or genres
      * @param regex regex or mood(genre) if i=1 regex=null
      * @throws SQLException
      */
-    private void updateTable(int i,String regex) throws SQLException {
+    private void updateTable(int i, String regex) throws SQLException {
 
         try {
-            ObservableList<Song> data=null;
-            switch (i){
+            ObservableList<Song> data = null;
+            switch (i) {
                 case 1:
-                    data= JDBCConnector.returnSongs();
+                    data = JDBCConnector.returnSongs();
                     break;
                 case 2:
                     displaySongs.toFront();
-                    data=JDBCConnector.returnSongsByRegex(regex);
+                    data = JDBCConnector.returnSongsByRegex(regex);
                     break;
                 case 3:
                     displaySongs.toFront();
-                    data=JDBCConnector.returnSongsByMoodOrGenre(regex);
+                    data = JDBCConnector.returnSongsByMoodOrGenre(regex);
                     break;
             }
             tableOfSongs.setItems(data);
@@ -311,20 +311,21 @@ public class PlayerController implements Initializable,Observer {
             tableOfSongs.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent click) {
-                    if(click.getButton()== MouseButton.SECONDARY){
+                    if (click.getButton() == MouseButton.SECONDARY) {
                         editSong(tableOfSongs.getSelectionModel().getSelectedItem());
-                    }else if(click.getClickCount()==2){
+                    } else if (click.getClickCount() == 2) {
                         songs.clear();
-                        for(Song d:tableOfSongs.getItems()){
+                        for (Song d : tableOfSongs.getItems()) {
                             songs.add(d);
-                        }mp3player.loadSongs(songs);
-                            try {
-                                musicBar.setVisible(true);
-                                additionalInfo.setText("");
-                                mp3player.setCurrentSong(tableOfSongs.getSelectionModel().getFocusedIndex());
-                            }catch (NullPointerException ex){
-                                additionalInfo.setText("Songs not found");
-                            }
+                        }
+                        mp3player.loadSongs(songs);
+                        try {
+                            musicBar.setVisible(true);
+                            additionalInfo.setText("");
+                            mp3player.setCurrentSong(tableOfSongs.getSelectionModel().getFocusedIndex());
+                        } catch (NullPointerException ex) {
+                            additionalInfo.setText("Songs not found");
+                        }
 
                     }
                 }
@@ -338,20 +339,20 @@ public class PlayerController implements Initializable,Observer {
 
     @FXML
     private void addSongs() throws InvalidDataException, UnsupportedTagException, IOException {
-        List<File> files=null;
+        List<File> files = null;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Add new songs");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio files","*.mp3","*.3gp","*.flac"));
-        files=fileChooser.showOpenMultipleDialog(new Stage());
-        if(files!=null){
-                    JDBCConnector.addSongs(files);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio files", "*.mp3", "*.3gp", "*.flac"));
+        files = fileChooser.showOpenMultipleDialog(new Stage());
+        if (files != null) {
+            JDBCConnector.addSongs(files);
         }
 
     }
 
-    private void fadeIN(AnchorPane node,AnchorPane node1){
+    private void fadeIN(AnchorPane node, AnchorPane node1) {
 
-        FadeTransition fadeTransition=new FadeTransition();
+        FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(200));
         fadeTransition.setNode(node);
         fadeTransition.setFromValue(0);
@@ -359,10 +360,11 @@ public class PlayerController implements Initializable,Observer {
         fadeTransition.play();
 
     }
-    private void fadeOut(AnchorPane node,AnchorPane node1) {
+
+    private void fadeOut(AnchorPane node, AnchorPane node1) {
         System.out.println(node.getOpacity());
         System.out.println(node1.getOpacity());
-        if (node1.getOpacity() !=0) {
+        if (node1.getOpacity() != 0) {
             FadeTransition fadeTransition = new FadeTransition();
             fadeTransition.setDuration(Duration.millis(200));
             fadeTransition.setNode(node1);
@@ -377,33 +379,32 @@ public class PlayerController implements Initializable,Observer {
     }
 
     /**
-     *
-     * @param i   1-playlist 2-artist 3-album
-     * @param name name of playlist/artist/album
+     * @param i     1-playlist 2-artist 3-album
+     * @param name  name of playlist/artist/album
      * @param image image of -||-
      */
-    private void displayPlaylistPane(int i,String name,String image){
+    private void displayPlaylistPane(int i, String name, String image) {
         displayWithInfo.toFront();
 
         try {
             imageView.setImage(new Image(new FileInputStream(image)));
         } catch (FileNotFoundException e) {
-            System.out.println("obrazek   "+e.getMessage());
+            System.out.println("obrazek   " + e.getMessage());
         }
-        ObservableList<Song> data=null;
-        switch (i){
+        ObservableList<Song> data = null;
+        switch (i) {
             case 1:
                 break;
             case 2:
                 try {
-                    data=JDBCConnector.returnByArtist(name);
+                    data = JDBCConnector.returnByArtist(name);
                 } catch (SQLException e) {
 
                 }
                 break;
             case 3:
                 try {
-                    data=JDBCConnector.returnByAlbum(name);
+                    data = JDBCConnector.returnByAlbum(name);
                 } catch (SQLException e) {
 
                 }
@@ -411,94 +412,103 @@ public class PlayerController implements Initializable,Observer {
         }
 
         songsOfPlaylist.setItems(data);
-        if (!songs.isEmpty())songs.clear();
+        if (!songs.isEmpty()) songs.clear();
         songs.addAll(data);
         mp3player.loadSongs(songs);
         songsOfPlaylist.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent click) {
-                if(click.getButton()== MouseButton.SECONDARY){
+                if (click.getButton() == MouseButton.SECONDARY) {
                     editSong(songsOfPlaylist.getSelectionModel().getSelectedItem());
-                }else if(click.getClickCount()==2){
+                } else if (click.getClickCount() == 2) {
                     try {
                         musicBar.setVisible(true);
                         additionalInfo.setText("");
                         mp3player.setCurrentSong(songsOfPlaylist.getSelectionModel().getSelectedIndex());
-                    }catch (NullPointerException ex){
+                    } catch (NullPointerException ex) {
                         additionalInfo.setText("Songs not found");
                     }
                 }
             }
         });
         info.setText(name);
-        numberOfSongs.setText("Number of songs: "+data.size());
+        numberOfSongs.setText("Number of songs: " + data.size());
     }
 
     @FXML
-    public void play_pause_song(ActionEvent event){
+    public void play_pause_song(ActionEvent event) {
         mp3player.play_pause();
     }
+
     @FXML
-    public void next_song(){
-        try{
+    public void next_song() {
+        try {
             mp3player.next();
-        }catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
 
         }
     }
+
     @FXML
-    public void prev_song(){
+    public void prev_song() {
         try {
             mp3player.prev();
-        }catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
 
         }
     }
+
     @FXML
-    public void autoreplay(){
-        boolean replaybutton=mp3player.setAutoreplay();
-        if(replaybutton){
+    public void autoreplay() {
+        boolean replaybutton = mp3player.setAutoreplay();
+        if (replaybutton) {
             replaySong.setStyle("-fx-background-color: white");
             replaySong.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent mouseEvent) {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
                     replaySong.setStyle("-fx-background-color: #4F5459");
                 }
             });
             replaySong.setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent mouseEvent) {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
                     replaySong.setStyle("-fx-background-color: white");
                 }
             });
-        }else{
+        } else {
             replaySong.setStyle("-fx-background-color: #2D3237");
             replaySong.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent mouseEvent) {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
                     replaySong.setStyle("-fx-background-color: #4F5459");
                 }
             });
             replaySong.setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override public void handle(MouseEvent mouseEvent) {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
                     replaySong.setStyle("-fx-background-color: #2D3237");
                 }
             });
         }
     }
+
     @FXML
     private void watchOnYoutube() {
         try {
             mp3player.watchYoutube();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         musicBar.setVisible(true);
-        mp3player=new Mp3player();
+        mp3player = new Mp3player();
         mp3player.loadBar(musicBar);
 
-        updateListView(moodsListView,Moods.moods);
-        updateListView(genresListView, Genres.genres);
+//        updateListView(moodsListView,Moods.moods);
+//        updateListView(genresListView, Genres.genres);
 
         mp3player.register(this);
 
@@ -519,10 +529,9 @@ public class PlayerController implements Initializable,Observer {
 
     @Override
     public void update(int name) {
-            tableOfSongs.getSelectionModel().select(name);
-            tableOfSongs.scrollTo(name);
+        tableOfSongs.getSelectionModel().select(name);
+        tableOfSongs.scrollTo(name);
     }
-
 
 
 }

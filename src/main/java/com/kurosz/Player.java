@@ -2,11 +2,9 @@ package com.kurosz;
 
 import com.kurosz.Model.JDBCConnector;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -25,20 +23,20 @@ public class Player extends Application {
     public void start(final Stage primaryStage) throws IOException {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         Parent root = FXMLLoader.load(getClass().getResource("/player.fxml"));
+
+        prepareScene(root,primaryStage);
+    }
+
+    private void prepareScene(final Parent root, final Stage primaryStage){
         primaryStage.initStyle(StageStyle.TRANSPARENT);
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
 
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
+        root.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
         });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-
-            public void handle(MouseEvent event) {
-                primaryStage.setX(event.getScreenX() - xOffset);
-                primaryStage.setY(event.getScreenY() - yOffset);
-            }
+        root.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
         });
 
         Scene scene = new Scene(root);
@@ -49,10 +47,10 @@ public class Player extends Application {
     }
 
     @Override
-    public void init() throws Exception {
+    public void init() {
         try{
             JDBCConnector.connect();
-            System.out.println("Polaczono");
+            System.out.println("Connected");
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }

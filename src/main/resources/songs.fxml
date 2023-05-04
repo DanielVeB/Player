@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.kurosz.Controller.SongsController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <children>
+        <TableView fx:id="songsTable" layoutX="17.0" layoutY="28.0" prefHeight="551.0" prefWidth="962.0"
+                   stylesheets="@style/style.css">
+            <columns>
+                <TableColumn fx:id="title" minWidth="50.0" prefWidth="250.0" text="title"/>
+                <TableColumn fx:id="artist" minWidth="50.0" prefWidth="200.0" text="artist"/>
+                <TableColumn fx:id="album" minWidth="50.0" prefWidth="200.0" text="album"/>
+                <TableColumn fx:id="rate" maxWidth="100.0" minWidth="50.0" text="rate"/>
+                <TableColumn fx:id="year" maxWidth="100.0" minWidth="50.0" text="year"/>
+                <TableColumn fx:id="track" maxWidth="200.0" minWidth="50.0" prefWidth="150.0" text="track"/>
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>

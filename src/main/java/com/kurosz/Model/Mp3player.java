@@ -145,10 +145,23 @@ public class Mp3player extends EventDispatcher<IncomingEvent> implements Subject
     }
 
     public void play_pause() {
+//        switch (currentStatus){
+//            case PLAYING -> {
+//                dispatchEvent(new PauseSongEvent());
+//                break;
+//            }
+//            case PAUSE -> dispatchEvent(new PlaySongEvent());
+//        }
+
         switch (currentStatus){
-            case PLAYING -> dispatchEvent(new PauseSongEvent());
-            case PAUSE -> dispatchEvent(new PlaySongEvent());
+            case PLAYING:
+                dispatchEvent(new PauseSongEvent());
+                break;
+            case PAUSE:
+                dispatchEvent(new PlaySongEvent());
+                break;
         }
+
     }
 
     private ArrayList<Observer> observers = new ArrayList<>();

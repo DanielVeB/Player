@@ -1,6 +1,11 @@
 package com.kurosz;
 
+import com.kurosz.controller.NewPlaylistController;
+import com.kurosz.controller.PlayerController;
+import com.kurosz.controller.SongsController;
 import com.kurosz.model.JDBCConnector;
+import com.kurosz.player.MusicRemoteController;
+import com.kurosz.player.PlayerConfig;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,13 +28,23 @@ public class Player extends Application {
 
 
     public void start(final Stage primaryStage) throws IOException {
+        PlayerConfig playerConfig = new PlayerConfig();
+        MusicRemoteController musicRemoteController = playerConfig.musicRemoteController();
+        NewPlaylistController newPlaylistController = new NewPlaylistController();
+        SongsController songsController = new SongsController();
+
+
         primaryStage.initStyle(StageStyle.UNDECORATED);
-        Parent root = FXMLLoader.load(getClass().getResource("/player.fxml"));
+
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/player.fxml"));
+        mainLoader.setController(new PlayerController(musicRemoteController, newPlaylistController, songsController));
+
+        Parent root = mainLoader.load();
 
         prepareScene(root,primaryStage);
     }
 
-    private void prepareScene(final Parent root, final Stage primaryStage){
+    private void prepareScene(final Parent root, final Stage primaryStage) {
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 
         root.setOnMousePressed(event -> {
@@ -42,6 +57,7 @@ public class Player extends Application {
         });
 
         Scene scene = new Scene(root);
+
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setTitle("Player");
         primaryStage.setScene(scene);
@@ -50,10 +66,10 @@ public class Player extends Application {
 
     @Override
     public void init() {
-        try{
+        try {
             JDBCConnector.connect();
             System.out.println("Connected");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }

@@ -16,7 +16,7 @@
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="800.0" prefWidth="1280.0" stylesheets="@style/style.css" xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:controller="com.kurosz.controller.PlayerController">
+            xmlns:fx="http://javafx.com/fxml">
    <children>
       <AnchorPane fx:id="top" prefHeight="75.0" prefWidth="1280.0">
          <children>
@@ -121,22 +121,27 @@
                </children>
             </StackPane>
             <AnchorPane fx:id="musicBar" layoutY="600.0" prefHeight="127.0" prefWidth="1024.0">
-               <children>
-                  <ImageView fitHeight="64.0" fitWidth="65.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="prevSong" layoutX="646.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#prev_song" prefHeight="32.0" prefWidth="45.0" />
-                  <Button fx:id="playpause" layoutX="707.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#play_pause_song" prefHeight="32.0" prefWidth="45.0" />
-                  <Button fx:id="nextSong" layoutX="767.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#next_song" prefHeight="32.0" prefWidth="45.0" />
-                  <Button fx:id="replaySong" layoutX="829.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#autoreplay" prefHeight="32.0" prefWidth="45.0" />
-                  <Button fx:id="youtubeButton" layoutX="512.0" layoutY="26.0" mnemonicParsing="false" onAction="#watchOnYoutube">
-                     <graphic>
-                        <ImageView fitHeight="34.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/youtube.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-               </children>
+                <children>
+                    <AnchorPane fx:id="musicRemotePane">
+<!--                        <fx:include fx:id="musicRemote" source="musicRemote.fxml" />-->
+                    </AnchorPane>
+                </children>
+<!--               <children>-->
+<!--                  <ImageView fitHeight="64.0" fitWidth="65.0" layoutX="14.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />-->
+<!--                  <Button fx:id="prevSong" layoutX="646.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#prev_song" prefHeight="32.0" prefWidth="45.0" />-->
+<!--                  <Button fx:id="playpause" layoutX="707.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#play_pause_song" prefHeight="32.0" prefWidth="45.0" />-->
+<!--                  <Button fx:id="nextSong" layoutX="767.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#next_song" prefHeight="32.0" prefWidth="45.0" />-->
+<!--                  <Button fx:id="replaySong" layoutX="829.0" layoutY="26.0" minWidth="45.0" mnemonicParsing="false" onAction="#autoreplay" prefHeight="32.0" prefWidth="45.0" />-->
+<!--                  <Button fx:id="youtubeButton" layoutX="512.0" layoutY="26.0" mnemonicParsing="false" onAction="#watchOnYoutube">-->
+<!--                     <graphic>-->
+<!--                        <ImageView fitHeight="34.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                           <image>-->
+<!--                              <Image url="@images/youtube.png" />-->
+<!--                           </image>-->
+<!--                        </ImageView>-->
+<!--                     </graphic>-->
+<!--                  </Button>-->
+<!--               </children>-->
             </AnchorPane>
          </children>
       </AnchorPane>

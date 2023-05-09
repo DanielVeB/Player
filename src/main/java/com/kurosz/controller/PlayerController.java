@@ -3,6 +3,8 @@ package com.kurosz.controller;
 
 import com.jfoenix.controls.JFXListView;
 import com.kurosz.model.*;
+import com.kurosz.player.MusicRemoteController;
+import com.kurosz.player.PlayerConfig;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.animation.FadeTransition;
@@ -13,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +30,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,12 +56,9 @@ public class PlayerController implements Initializable, Observer {
     private StackPane musicStackPane;
 
     @FXML
-    private NewPlaylistController newPlaylistController;
-
-    @FXML
     private AnchorPane moviePane, musicPane, musicMenu, movieMenu,
             displayWithInfo, displayAlbumsArtists, displaySongs, mainMusicPane,
-            createPlaylistPane, musicBar, newPlaylistPane, songsPane;
+            createPlaylistPane, musicBar, newPlaylistPane, songsPane,musicRemotePane;
 
     @FXML
     private ListView<Button> playlisty;
@@ -87,6 +89,60 @@ public class PlayerController implements Initializable, Observer {
     private Button replaySong;
 
 
+    private final MusicRemoteController musicRemoteController;
+    private final SongsController songsController;
+    private final NewPlaylistController newPlaylistController;
+
+    private final static Logger logger = LoggerFactory.getLogger(PlayerController.class);
+
+
+    public PlayerController(MusicRemoteController musicRemoteController,
+                            NewPlaylistController newPlaylistController,
+                            SongsController songsController) {
+        logger.info("Player controller constructor");
+        this.newPlaylistController = newPlaylistController;
+        this.musicRemoteController = musicRemoteController;
+        this.songsController = songsController;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try {
+            FXMLLoader nestedLoader = new FXMLLoader(getClass().getResource("/musicRemote.fxml"));
+            nestedLoader.setController(musicRemoteController);
+            AnchorPane m = nestedLoader.load();
+            musicRemotePane.getChildren().add(m);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        musicBar.setVisible(true);
+        mp3player = new Mp3player();
+//        mp3player.loadBar(musicBar);
+
+//        updateListView(moodsListView,Moods.moods);
+//        updateListView(genresListView, Genres.genres);
+
+        mp3player.register(this);
+
+
+        title.setCellValueFactory(new PropertyValueFactory<>("title"));
+        artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        album.setCellValueFactory(new PropertyValueFactory<>("album"));
+        track.setCellValueFactory(new PropertyValueFactory<>("track"));
+        year.setCellValueFactory(new PropertyValueFactory<>("year"));
+        rate.setCellValueFactory(new PropertyValueFactory<>("rate"));
+        titleP.setCellValueFactory(new PropertyValueFactory<>("title"));
+        artistP.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        albumP.setCellValueFactory(new PropertyValueFactory<>("album"));
+        trackP.setCellValueFactory(new PropertyValueFactory<>("track"));
+        yearP.setCellValueFactory(new PropertyValueFactory<>("year"));
+        rateP.setCellValueFactory(new PropertyValueFactory<>("rate"));
+    }
+
     @FXML
     private void search() {
         String regex = searchField.getText();
@@ -100,6 +156,7 @@ public class PlayerController implements Initializable, Observer {
     Mp3player mp3player = null;
 
 
+    @FXML
     public void handleButton(ActionEvent event) {
 
         if (event.getTarget() == musicbutton) {
@@ -501,31 +558,7 @@ public class PlayerController implements Initializable, Observer {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        musicBar.setVisible(true);
-        mp3player = new Mp3player();
-        mp3player.loadBar(musicBar);
 
-//        updateListView(moodsListView,Moods.moods);
-//        updateListView(genresListView, Genres.genres);
-
-        mp3player.register(this);
-
-
-        title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        artist.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        album.setCellValueFactory(new PropertyValueFactory<>("album"));
-        track.setCellValueFactory(new PropertyValueFactory<>("track"));
-        year.setCellValueFactory(new PropertyValueFactory<>("year"));
-        rate.setCellValueFactory(new PropertyValueFactory<>("rate"));
-        titleP.setCellValueFactory(new PropertyValueFactory<>("title"));
-        artistP.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        albumP.setCellValueFactory(new PropertyValueFactory<>("album"));
-        trackP.setCellValueFactory(new PropertyValueFactory<>("track"));
-        yearP.setCellValueFactory(new PropertyValueFactory<>("year"));
-        rateP.setCellValueFactory(new PropertyValueFactory<>("rate"));
-    }
 
     @Override
     public void update(int name) {

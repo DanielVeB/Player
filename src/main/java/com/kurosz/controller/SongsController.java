@@ -32,6 +32,7 @@ public class SongsController implements Initializable {
     private final static Logger logger = LoggerFactory.getLogger(SongsController.class);
 
     public SongsController() {
+        logger.info("Songs Controller constructor");
         songs = FXCollections.observableArrayList();
     }
 

@@ -1,7 +1,7 @@
 package com.kurosz.domain;
 
 import com.kurosz.events.EventDispatcher;
-import com.kurosz.events.EventHandler;
+import com.kurosz.events.FxmlEventHandler;
 import com.kurosz.events.incoming.*;
 import com.kurosz.events.outcoming.OutcomingEvent;
 import com.kurosz.events.outcoming.SongCurrentTimeChangedEvent;
@@ -9,7 +9,7 @@ import com.kurosz.events.outcoming.SongStatusUpdatedEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class MediaPlayerService extends EventDispatcher<OutcomingEvent> implements EventHandler<IncomingEvent> {
+public class MediaPlayerService extends EventDispatcher<OutcomingEvent> implements FxmlEventHandler<IncomingEvent> {
 
 
     private MediaPlayer mediaPlayer;

@@ -1,6 +1,6 @@
 package com.kurosz.events;
 
-public interface EventHandler<T extends Event> {
+public interface FxmlEventHandler<T extends Event> {
 
     void handle(T event);
 }

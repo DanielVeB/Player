@@ -29,6 +29,6 @@
             <Font size="26.0" />
          </font>
       </Label>
-      <Label fx:id="artist" layoutX="96.0" layoutY="49.0" prefHeight="25.0" prefWidth="246.0" text="Artist" />
+      <Label fx:id="author" layoutX="96.0" layoutY="49.0" prefHeight="25.0" prefWidth="246.0" text="Artist" />
     </children>
 </AnchorPane>

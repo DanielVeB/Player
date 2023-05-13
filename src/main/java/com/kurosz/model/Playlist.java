@@ -7,7 +7,7 @@ import java.util.LinkedList;
 public class Playlist extends ArtistAlbum {
 
     private String description;
-    LinkedList<Song>songs=new LinkedList<>();
+    LinkedList<SongDto>songs=new LinkedList<>();
 
 
     public Playlist(String name, String image) {

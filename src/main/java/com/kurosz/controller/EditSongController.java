@@ -3,7 +3,7 @@ package com.kurosz.controller;
 import com.kurosz.model.Genres;
 import com.kurosz.model.JDBCConnector;
 import com.kurosz.model.Moods;
-import com.kurosz.model.Song;
+import com.kurosz.model.SongDto;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -37,14 +37,14 @@ public class EditSongController implements Initializable {
     @FXML
     private Button saveButton;
     private String path = "";
-    private Song s;
+    private SongDto s;
 
 
 
     private static final Logger logger = LoggerFactory.getLogger(EditSongController.class);
 
 
-    void initData(Song s) {
+    void initData(SongDto s) {
         logger.info("INIT DATA IN EDIT SONG CONTROLLER");
         this.s = s;
         path = s.getPath();

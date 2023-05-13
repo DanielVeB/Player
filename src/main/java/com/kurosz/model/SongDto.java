@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXTextArea;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Song  {
+public class SongDto {
     private String path;
     private SimpleStringProperty title;
     private SimpleStringProperty artist;
@@ -16,7 +16,7 @@ public class Song  {
     private String image;
 
 
-    public Song(SongBuilder songBuilder){
+    public SongDto(SongBuilder songBuilder){
         this.path=songBuilder.path;
         this.title =songBuilder.title;
         this.artist = songBuilder.artist;
@@ -81,8 +81,8 @@ public class Song  {
 
             return this;
         }
-        public Song build(){
-            return new Song(this);
+        public SongDto build(){
+            return new SongDto(this);
         }
 
     }

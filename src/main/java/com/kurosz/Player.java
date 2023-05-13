@@ -6,6 +6,7 @@ import com.kurosz.controller.SongsController;
 import com.kurosz.model.JDBCConnector;
 import com.kurosz.player.MusicRemoteController;
 import com.kurosz.player.PlayerConfig;
+import com.kurosz.songs.SongsService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +30,7 @@ public class Player extends Application {
         PlayerConfig playerConfig = new PlayerConfig();
         MusicRemoteController musicRemoteController = playerConfig.musicRemoteController();
         NewPlaylistController newPlaylistController = new NewPlaylistController();
-        SongsController songsController = new SongsController();
+        SongsController songsController = new SongsController(new SongsService());
 
 
         primaryStage.initStyle(StageStyle.UNDECORATED);

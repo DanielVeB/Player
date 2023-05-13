@@ -31,7 +31,7 @@ public class Mp3player extends EventDispatcher<IncomingEvent> implements Subject
     private JFXSlider musicSlider, volumeSlider;
     MediaPlayerService playerService;
 
-    private LinkedList<Song> songs = new LinkedList<>();
+    private LinkedList<SongDto> songs = new LinkedList<>();
     private int index;
     private int length;
     private boolean autoreplay = false;
@@ -100,7 +100,7 @@ public class Mp3player extends EventDispatcher<IncomingEvent> implements Subject
         anchorPane.getChildren().addAll(titleAndArtist, musicSlider, volumeSlider);
 
     }
-    public void loadSongs(LinkedList<Song> songs) {
+    public void loadSongs(LinkedList<SongDto> songs) {
         this.songs = songs;
         length = songs.size();
     }

@@ -14,8 +14,6 @@ import org.junit.jupiter.api.TestInstance;
 class SongsRepositoryTest {
     private SessionFactory sessionFactory;
 
-//    private EntityManager entityManager;
-
     private SongsRepository songsRepository;
 
     @BeforeAll

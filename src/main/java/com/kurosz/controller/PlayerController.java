@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 import java.util.stream.IntStream;
 
 public class PlayerController implements Initializable, Observer {
-    private LinkedList<Song> songs = new LinkedList<>();
+    private LinkedList<SongDto> songs = new LinkedList<>();
 
     @FXML
     private Button musicbutton, moviebutton, exit, displayAlbums, displayArtists, displaySongsButton,
@@ -62,12 +62,12 @@ public class PlayerController implements Initializable, Observer {
     private JFXListView<Button> genresListView, moodsListView;
 
     @FXML
-    private TableView<Song> tableOfSongs, songsOfPlaylist;
+    private TableView<SongDto> tableOfSongs, songsOfPlaylist;
     @FXML
-    private TableColumn<Song, String> title, artist, album, year, track,
+    private TableColumn<SongDto, String> title, artist, album, year, track,
             titleP, artistP, albumP, yearP, trackP;
     @FXML
-    private TableColumn<Song, Integer> rate, rateP;
+    private TableColumn<SongDto, Integer> rate, rateP;
     @FXML
     private TextField searchField, playlistName;
     @FXML
@@ -211,7 +211,7 @@ public class PlayerController implements Initializable, Observer {
 
     }
 
-    public Stage showEditSongWindow(Song s, String fxml) {
+    public Stage showEditSongWindow(SongDto s, String fxml) {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource(
                         fxml
@@ -233,7 +233,7 @@ public class PlayerController implements Initializable, Observer {
     }
 
 
-    private void editSong(Song song) {
+    private void editSong(SongDto song) {
         showEditSongWindow(song, "/editSong.fxml");
     }
 

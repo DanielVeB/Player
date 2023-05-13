@@ -9,8 +9,8 @@ import java.awt.Desktop;
 import java.net.URI;
 
 public class YoutubeLauncher implements Runnable{
-    Song s;
-    YoutubeLauncher(Song s){
+    SongDto s;
+    YoutubeLauncher(SongDto s){
         this.s=s;
     }
 

@@ -198,37 +198,37 @@ public class JDBCConnector {
         return g;
     }
 
-    public static ObservableList<Song> returnSongs() throws SQLException {
+    public static ObservableList<SongDto> returnSongs() throws SQLException {
 
         String SQL = "Select title,artist,album,year,rate,track,path,text,image from songs";
         return returndata(SQL);
     }
 
-    public static ObservableList<Song> returnSongsByRegex(String regex) throws SQLException {
+    public static ObservableList<SongDto> returnSongsByRegex(String regex) throws SQLException {
         regex = regex.toLowerCase();
         String SQL = "Select title,artist,album,year,rate,track,path,text,image from songs WHERE LOWER(title) LIKE '%" + regex + "%'OR " +
                 "LOWER(artist) LIKE '%" + regex + "%' OR LOWER(album) LIKE '%" + regex + "%'";
         return returndata(SQL);
     }
 
-    public static ObservableList<Song> returnSongsByMoodOrGenre(String regex) throws SQLException {
+    public static ObservableList<SongDto> returnSongsByMoodOrGenre(String regex) throws SQLException {
 
         String SQL = "Select title,artist,album,year,rate,track,path,text,image from songs WHERE '" + regex + "'=ANY(moods) OR '" + regex +
                 "'=ANY(genre)";
         return returndata(SQL);
     }
 
-    private static ObservableList<Song> returndata(String SQL) throws SQLException {
+    private static ObservableList<SongDto> returndata(String SQL) throws SQLException {
         ResultSet rs = null;
         Statement stmt = conn.createStatement();
         rs = stmt.executeQuery(SQL);
 
-        ObservableList<Song> data =
+        ObservableList<SongDto> data =
                 FXCollections.observableArrayList();
         try {
             while (rs.next()) {
-                ObservableList<Song> row = FXCollections.observableArrayList();
-                data.add(new Song.SongBuilder(rs.getString(7)).title(rs.getString(1)).artist(rs.getString(2)).
+                ObservableList<SongDto> row = FXCollections.observableArrayList();
+                data.add(new SongDto.SongBuilder(rs.getString(7)).title(rs.getString(1)).artist(rs.getString(2)).
                         album(rs.getString(3)).year(rs.getString(4)).rate(rs.getInt(5)).
                         track(rs.getString(6)).text(rs.getString(8)).image(rs.getString(9)).build());
             }
@@ -268,7 +268,7 @@ public static ObservableList<Album> returnAlbums() throws SQLException {
     }
     return data;
 }
-    public static ObservableList<Song> returnByAlbum(String album) throws SQLException {
+    public static ObservableList<SongDto> returnByAlbum(String album) throws SQLException {
 
         String SQL = "Select title,artist,album,year,rate,track,path,text,image from songs WHERE album='" + album + "'";
         return returndata(SQL);
@@ -325,7 +325,7 @@ public static ObservableList<Album> returnAlbums() throws SQLException {
         }
         return data;
     }
-    public static ObservableList<Song> returnByArtist(String artist) throws SQLException {
+    public static ObservableList<SongDto> returnByArtist(String artist) throws SQLException {
 
         String SQL = "Select title,artist,album,year,rate,track,path,text,image from songs WHERE artist='" + artist + "'";
         return returndata(SQL);

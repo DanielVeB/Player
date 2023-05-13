@@ -1,21 +1,20 @@
 package com.kurosz.controller;
 
 import com.kurosz.events.EventDispatcher;
-import com.kurosz.events.FxmlEventHandler;
 import com.kurosz.events.fxml.FxmlEvent;
 import com.kurosz.events.fxml.SongSelectedEvent;
 import com.kurosz.events.fxml.SongSelection;
-import com.kurosz.model.Song;
+import com.kurosz.model.SongDto;
+import com.kurosz.songs.SongsService;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,20 +23,23 @@ import java.util.ResourceBundle;
 
 public class SongsController extends EventDispatcher<FxmlEvent> implements Initializable {
 
+    private final SongsService songsService;
     @FXML
-    private TableView<Song> songsTable;
+    private TableView<SongDto> songsTable;
 
     @FXML
-    private TableColumn<Song, String> title, artist, album, year, track;
+    private TableColumn<SongDto, String> title, artist, album, year, track;
 
     @FXML
-    private TableColumn<Song, Integer> rate;
+    private TableColumn<SongDto, Integer> rate;
 
-    private ObservableList<Song> songs;
+    private ObservableList<SongDto> songs;
+    private SongDto selectedSong;
 
     private final static Logger logger = LoggerFactory.getLogger(SongsController.class);
 
-    public SongsController() {
+    public SongsController(SongsService songsService) {
+        this.songsService = songsService;
         logger.info("Songs Controller constructor");
         songs = FXCollections.observableArrayList();
 
@@ -49,17 +51,20 @@ public class SongsController extends EventDispatcher<FxmlEvent> implements Initi
         logger.info("Initialize Songs Controller");
         initTableColumns();
 
-        songs.add(new Song.SongBuilder("Test").title("Test").artist("Test").
-                album("Test").year("Test").rate(6).
-                track("Test").text("Test").image("Test").build());
+        songsService.getSongs().forEach( it->
+                songs.add(it.toDto())
+        );
         songsTable.setItems(songs);
 
+        songsTable.getSelectionModel().getSelectedItems().addListener((ListChangeListener<? super SongDto>) change -> {
+            selectedSong = change.getList().get(0);
+        });
 
         songsTable.setOnMouseClicked(click -> {
             if(click.getButton()== MouseButton.SECONDARY){
 //
             }else if(click.getClickCount()==2){
-                dispatchEvent(new SongSelectedEvent("Songs Titile", "Songs Author","", SongSelection.SONGS));
+                dispatchEvent(new SongSelectedEvent(selectedSong.getTitle(), selectedSong.getArtist(),selectedSong.getPath(), SongSelection.SONGS));
 
             }
         });

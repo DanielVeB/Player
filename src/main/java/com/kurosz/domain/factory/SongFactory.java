@@ -12,7 +12,7 @@ public class SongFactory {
         File file = new File(filePath);
         SongFormat format = getFormat(file);
 
-        return new Song();
+        return new Song("","","");
     }
 
     private static SongFormat getFormat(File file) {

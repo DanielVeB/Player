@@ -1,9 +1,9 @@
 package com.kurosz.player;
 
 import com.jfoenix.controls.JFXSlider;
+import com.kurosz.events.FxmlEventDispatcher;
 import com.kurosz.events.FxmlEventHandler;
-import com.kurosz.events.fxml.FxmlEvent;
-import com.kurosz.events.fxml.SongSelectedEvent;
+import com.kurosz.events.fxml.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 
 @SuppressWarnings("unused")
-public class MusicRemoteController implements Initializable, FxmlEventHandler<FxmlEvent> {
+public class MusicRemoteController extends FxmlEventDispatcher<FxmlEvent> implements Initializable, FxmlEventHandler<FxmlEvent>{
 
     @FXML
     private AnchorPane musicRemotePane;
@@ -29,6 +29,8 @@ public class MusicRemoteController implements Initializable, FxmlEventHandler<Fx
 
     private final MusicPlayerService playerService;
 
+    private volatile SongSelection selection;
+
     public MusicRemoteController(MusicPlayerService playerService) {
         this.playerService = playerService;
     }
@@ -41,10 +43,12 @@ public class MusicRemoteController implements Initializable, FxmlEventHandler<Fx
 
     @FXML
     void prev(ActionEvent actionEvent) {
+        dispatchEvent(new PrevSongEvent(selection));
     }
 
     @FXML
     void next(ActionEvent actionEvent) {
+        dispatchEvent(new NextSongEvent(selection));
     }
 
     @FXML
@@ -71,5 +75,6 @@ public class MusicRemoteController implements Initializable, FxmlEventHandler<Fx
         author.setText(event.getAuthor());
 
         songPath = event.getPath();
+        selection = event.getSelectedFrom();
     }
 }

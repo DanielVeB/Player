@@ -6,12 +6,12 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class EventDispatcher<T extends Event> {
+public abstract class FxmlEventDispatcher<T extends Event> {
     protected List<FxmlEventHandler<T>> handlers;
 
-    private static final Logger logger = LoggerFactory.getLogger(EventDispatcher.class);
+    private static final Logger logger = LoggerFactory.getLogger(FxmlEventDispatcher.class);
 
-    public EventDispatcher(){
+    public FxmlEventDispatcher(){
         this.handlers = new LinkedList<>();
     }
 

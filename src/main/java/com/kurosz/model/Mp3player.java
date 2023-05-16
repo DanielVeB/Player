@@ -3,7 +3,7 @@ package com.kurosz.model;
 import com.jfoenix.controls.JFXSlider;
 import com.kurosz.domain.MediaPlayerService;
 import com.kurosz.domain.SongStatus;
-import com.kurosz.events.EventDispatcher;
+import com.kurosz.events.FxmlEventDispatcher;
 import com.kurosz.events.FxmlEventHandler;
 import com.kurosz.events.incoming.*;
 import com.kurosz.events.outcoming.OutcomingEvent;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 
-public class Mp3player extends EventDispatcher<IncomingEvent> implements Subject, FxmlEventHandler<OutcomingEvent> {
+public class Mp3player extends FxmlEventDispatcher<IncomingEvent> implements Subject, FxmlEventHandler<OutcomingEvent> {
     @FXML
     AnchorPane anchorPane;
 

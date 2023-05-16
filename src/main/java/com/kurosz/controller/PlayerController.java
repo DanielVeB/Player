@@ -96,6 +96,7 @@ public class PlayerController implements Initializable, Observer {
         this.songsController = songsController;
 
         this.songsController.addHandler(musicRemoteController);
+        this.musicRemoteController.addHandler(songsController);
     }
 
     @Override
